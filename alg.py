@@ -15,8 +15,8 @@ class Trader:
         s_increment = -1*(20 + position) / 15
         b_increment = (20 - position) / 15
         
-        sell_total = [Order('AMETHYSTS', sells[i - 1], int(s_increment*(i))) for i in range(1, 6)]
-        buy_total = [Order('AMETHYSTS', buys[i - 1], int(b_increment*(i))) for i in range(1, 6)]
+        sell_total = [Order('AMETHYSTS', sells[i - 1], int(s_increment*(6-i))) for i in range(1, 6)]
+        buy_total = [Order('AMETHYSTS', buys[i - 1], int(b_increment*(6-i))) for i in range(1, 6)]
         
         s_residue = -20 - (sum([int(s_increment*(i)) for i in range(1, 6)]) + position)
         sell_total.append(Order('AMETHYSTS', 10000, s_residue))
