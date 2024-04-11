@@ -1,16 +1,29 @@
-def ameth_ord_to_make(position):
-        
-    sells = [9999, 10000, 10001, 10002]
-    buys = [9999, 9998, 9997, 9996]
-        
-    s_increment = -1*(20 + position) / 10
-    b_increment = (20 - position) / 10
-        
-    sell_total = [int(s_increment*(5-i)) for i in range(1, 5)]
-    buy_total = [int(b_increment*(5-i)) for i in range(1, 5)]
-        
-    return buy_total, sell_total
+import numpy as np
 
-for i in range(-20, 21, 1):
-    buy, sell = ameth_ord_to_make(i)
-    print(f"{i} : {sum(buy) + i}, {sum(sell) + i}")
+file = open("./round-1-island-data-bottle/prices_round_1_day_0.csv", "r")
+n = 7
+stock_mid_prices = []
+for line in file:
+    if "STARFRUIT" in line:
+        stock_mid_prices.append(float(line.split(";")[15]))
+    if len(stock_mid_prices) == n:
+        print(stock_mid_prices.pop())
+        break
+
+# Sample data: list of times and stock_mid_prices
+times = np.linspace(0, 0.1*(n-1), n-1) # List of timestamps
+
+
+# Calculate the coefficients of the best fit line
+# y = mx + c
+# where m is the slope and c is the y-intercept
+A = np.vstack([times, np.ones(len(times))]).T
+m, c = np.linalg.lstsq(A, stock_mid_prices, rcond=None)[0]
+
+# Predict the next stock mid price
+next_time = 1.01 # Assuming next point is one time step ahead
+print(m)
+print(c)
+next_stock_mid_price = m * next_time + c
+
+print("Next stock mid price:", next_stock_mid_price)
